@@ -8,8 +8,10 @@ use App\Services\MoodService;
 use App\Services\TimeOfDayService;
 use App\Services\UserPreferenceService;
 use App\Services\RecommendationService;
+use App\Models\User;
+use App\Enums\Mood;
 
-class RecommendationController extends Controller
+class  RecommendationController extends Controller
 {
     public function recommend(Request $request)
     {
@@ -19,19 +21,18 @@ class RecommendationController extends Controller
             'time_of_day' => 'nullable|string',
         ]);
 
-        $user = new class($data) {
-            public ?int $id;
-            public ?string $preferred_coffee = null;
-            public ?string $mood;
-            public ?string $time_of_day;
+        $mood = $data['mood'] ? Mood::tryFrom(mb_strtolower($data['mood'])) : null;
 
-            public function __construct($data)
-            {
-                $this->id = $data['user_id'] ?? null;
-                $this->mood = $data['mood'] ?? null;
-                $this->time_of_day = $data['time_of_day'] ?? null;
-            }
-        };
+        $user = null;
+        if (!empty($data['user_id'])) {
+            $user = User::find($data['user_id']);
+        }
+
+        if (!$user) {
+            $user = new User();
+            $user->mood = $data['mood'] ?? null;
+            $user->time_of_day = $data['time_of_day'] ?? null;
+        }
 
         $recommendation = (new RecommendationService(
             new MoodService(),

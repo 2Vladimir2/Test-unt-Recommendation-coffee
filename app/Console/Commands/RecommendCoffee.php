@@ -7,6 +7,7 @@ use App\Services\MoodService;
 use App\Services\TimeOfDayService;
 use App\Services\UserPreferenceService;
 use App\Services\RecommendationService;
+use App\Models\RecommendationHistory;
 
 
 class RecommendCoffee extends Command
@@ -53,7 +54,14 @@ class RecommendCoffee extends Command
 
         $coffee = $recommendationService->recommend($user);
 
-        $this->info("Пользователю {$name} рекомендован кофе: {$coffee}");
+        RecommendationHistory::create([
+            'user_name' => $name,
+            'mood' => $mood,
+            'recommended_coffee' => $coffee->value,
+            'recommended_at' => now(),
+        ]);
+
+        $this->info("Пользователю {$name} рекомендован кофе: {$coffee->value}");
 
         return 0;
     }
