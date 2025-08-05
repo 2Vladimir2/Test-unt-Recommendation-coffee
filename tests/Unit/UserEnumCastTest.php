@@ -2,9 +2,9 @@
 
 namespace Tests\Unit;
 
-use App\Enums\CoffeeType;
+use App\Enums\CoffeeTypeEnum;
 use App\Enums\MoodEnum;
-use App\Enums\TimeOfDay;
+use App\Enums\TimeOfDayEnum;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -24,10 +24,10 @@ class UserEnumCastTest extends TestCase
         $this->assertInstanceOf(MoodEnum::class, $user->mood);
         $this->assertEquals('cheerful', $user->mood->value);
 
-        $this->assertInstanceOf(TimeOfDay::class, $user->time_of_day);
+        $this->assertInstanceOf(TimeOfDayEnum::class, $user->time_of_day);
         $this->assertEquals('morning', $user->time_of_day->value);
 
-        $this->assertInstanceOf(CoffeeType::class, $user->preferred_coffee);
+        $this->assertInstanceOf(CoffeeTypeEnum::class, $user->preferred_coffee);
         $this->assertEquals('espresso', $user->preferred_coffee->value);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum TimeOfDay: string
+enum TimeOfDayEnum: string
 {
     case MORNING = 'morning';
     case AFTERNOON = 'afternoon';

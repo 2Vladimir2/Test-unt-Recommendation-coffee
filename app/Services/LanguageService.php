@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
-use App\Enums\CoffeeType;
+use App\Enums\CoffeeTypeEnum;
 use App\Enums\MoodEnum;
-use App\Enums\TimeOfDay;
+use App\Enums\TimeOfDayEnum;
 
 class LanguageService
 {
@@ -13,7 +13,7 @@ class LanguageService
         return __("coffee.$group.$enumValue");
     }
 
-    public function translateCoffee(CoffeeType $type): string
+    public function translateCoffee(CoffeeTypeEnum $type): string
     {
         return $this->translateEnumValue($type->value, 'coffeeType');
     }
@@ -23,7 +23,7 @@ class LanguageService
         return $this->translateEnumValue($mood->value, 'moods');
     }
 
-    public function translateTimeOfDay(TimeOfDay $time): string
+    public function translateTimeOfDay(TimeOfDayEnum $time): string
     {
         return $this->translateEnumValue($time->value, 'timeOfDay');
     }

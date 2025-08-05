@@ -19,8 +19,10 @@ class FakeAuthenticate
     {
         $userId = $request->header('X-User-Id');
 
-        if (! $userId || ! $user = User::find($userId)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+        if ($userId) {
+            $user = User::find($userId) ?? abort(404);
+        } else {
+            $user = User::inRandomOrder()->first();
         }
 
         Auth::login($user);

@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Enums\CoffeeType;
+use App\Enums\CoffeeTypeEnum;
 use App\Enums\MoodEnum;
 use App\Models\User;
 use App\Services\MoodService;
@@ -34,7 +34,7 @@ class RecommendationServiceTest extends TestCase
             'name' => 'Test User',
             'email' => 'user1@example.com',
             'password' => bcrypt('password'),
-            'preferred_coffee' => CoffeeType::ESPRESSO->value,
+            'preferred_coffee' => CoffeeTypeEnum::ESPRESSO->value,
             'mood' => MoodEnum::TIRED->value,
         ]);
 
@@ -67,7 +67,7 @@ class RecommendationServiceTest extends TestCase
             new UserPreferenceService
         );
 
-        $this->assertEquals(CoffeeType::ESPRESSO->value, $service->recommend($user)->value);
+        $this->assertEquals(CoffeeTypeEnum::ESPRESSO->value, $service->recommend($user)->value);
     }
 
     public function test_it_returns_default_if_no_data()
@@ -85,6 +85,6 @@ class RecommendationServiceTest extends TestCase
             new UserPreferenceService
         );
 
-        $this->assertEquals(CoffeeType::AMERICANO->value, $service->recommend($user)->value);
+        $this->assertEquals(CoffeeTypeEnum::AMERICANO->value, $service->recommend($user)->value);
     }
 }

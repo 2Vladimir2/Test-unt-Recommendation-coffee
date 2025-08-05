@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Enums\CoffeeType;
+use App\Enums\CoffeeTypeEnum;
 use App\Enums\MoodEnum;
 use App\Services\MoodService;
 use Tests\TestCase;
@@ -27,15 +27,15 @@ class MoodServiceTest extends TestCase
     {
         $service = new MoodService;
 
-        $this->assertEquals(CoffeeType::CAPPUCCINO, $service->getRecommendation(MoodEnum::CHEERFUL));
-        $this->assertEquals(CoffeeType::ESPRESSO, $service->getRecommendation(MoodEnum::TIRED));
+        $this->assertEquals(CoffeeTypeEnum::CAPPUCCINO, $service->getRecommendation(MoodEnum::CHEERFUL));
+        $this->assertEquals(CoffeeTypeEnum::ESPRESSO, $service->getRecommendation(MoodEnum::TIRED));
     }
 
     public function test_it_returns_default_for_null_mood()
     {
         $service = new MoodService;
 
-        $this->assertEquals(CoffeeType::AMERICANO, $service->getRecommendation(null));
+        $this->assertEquals(CoffeeTypeEnum::AMERICANO, $service->getRecommendation(null));
     }
 
     public function test_it_returns_default_for_unknown_mood()
@@ -44,6 +44,6 @@ class MoodServiceTest extends TestCase
 
         config()->set('recommendations.moods', []); // очищаем карту настроений
 
-        $this->assertEquals(CoffeeType::AMERICANO, $service->getRecommendation(MoodEnum::CHEERFUL));
+        $this->assertEquals(CoffeeTypeEnum::AMERICANO, $service->getRecommendation(MoodEnum::CHEERFUL));
     }
 }

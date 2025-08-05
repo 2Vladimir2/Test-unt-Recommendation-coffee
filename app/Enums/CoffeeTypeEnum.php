@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum CoffeeType: string
+enum CoffeeTypeEnum: string
 {
     case CAPPUCCINO = 'cappuccino';
     case ESPRESSO = 'espresso';
@@ -11,4 +11,8 @@ enum CoffeeType: string
     case AMERICANO = 'americano';
     case DECAFFEINATED = 'decaffeinated';
 
+    public static function all(): array
+    {
+        return array_column(self::cases(), 'value');
+    }
 }

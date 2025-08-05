@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
-use App\Enums\CoffeeType;
+use App\Enums\CoffeeTypeEnum;
 use App\Enums\MoodEnum;
-use App\Enums\TimeOfDay;
+use App\Enums\TimeOfDayEnum;
 use App\Models\User;
 
 class RecommendationService
@@ -15,23 +15,24 @@ class RecommendationService
         protected UserPreferenceService $userPreferenceService,
     ) {}
 
-    public function recommend(User $user, array $data): CoffeeType
+    public function recommend(User $user, array $data): CoffeeTypeEnum
     {
         $mood = MoodEnum::tryFrom(mb_strtolower($data['mood'] ?? ''));
-
-        if ($preferred = $this->userPreferenceService->getRecommendation($user)) {
-            return $preferred;
-        }
+        $timeOfDay = TimeOfDayEnum::tryFrom(mb_strtolower($data['tye_of_day'] ?? ''));
 
         if ($mood) {
-            return $this->moodService->getRecommendation($user->mood);
+            return $this->moodService->getRecommendation($mood);
         }
 
-        if ($user->time_of_day instanceof TimeOfDay) {
-            return $this->timeOfDayService->getRecommendation($user->time_of_day);
+        if ($timeOfDay) {
+            return $this->timeOfDayService->getRecommendation($timeOfDay);
         }
 
-        return CoffeeType::from(config('recommendations.default'));
+        if ($preferred = $this->userPreferenceService->getRecommendation($user)) {
+            return CoffeeTypeEnum::tryFrom($preferred) ?? config('recommendations.default');
+        }
+
+        return CoffeeTypeEnum::tryFrom(config('recommendations.default'));
 
     }
 }

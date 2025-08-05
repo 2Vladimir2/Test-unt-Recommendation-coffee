@@ -17,9 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('preferred_coffee')->nullable();
-            $table->string('mood')->nullable();
-            $table->string('time_of_day')->nullable();
+            $table->jsonb('preferred_coffies')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

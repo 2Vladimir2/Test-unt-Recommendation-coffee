@@ -2,12 +2,12 @@
 
 namespace App\Services;
 
-use App\Enums\CoffeeType;
-use App\Enums\TimeOfDay;
+use App\Enums\CoffeeTypeEnum;
+use App\Enums\TimeOfDayEnum;
 
 class TimeOfDayService
 {
-    public function getRecommendation(?TimeOfDay $timeOfDay): CoffeeType
+    public function getRecommendation(?TimeOfDayEnum $timeOfDay): CoffeeTypeEnum
     {
         if ($timeOfDay === null) {
             return config('recommendations.default');
@@ -17,6 +17,6 @@ class TimeOfDayService
 
         $recommendation = $timeMap[$timeOfDay->value] ?? config('recommendations.default');
 
-        return CoffeeType::from($recommendation);
+        return CoffeeTypeEnum::from($recommendation);
     }
 }

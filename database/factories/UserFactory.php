@@ -2,8 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Enums\CoffeeTypeEnum;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 /**
@@ -25,13 +27,14 @@ class UserFactory extends Factory
 
     public function definition(): array
     {
+        $coffies = collect(CoffeeTypeEnum::all());
+
         return [
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
-            'preferred_coffee' => $this->faker->randomElement(['americano', 'cappuccino', 'espresso']),
-            'mood' => $this->faker->randomElement(['tired', 'cheery']),
+            'preferred_coffies' => $coffies->shuffle()->take(3)->values()->toArray(),
             'email_verified_at' => now(),
-            'password' => bcrypt('password'),
+            'password' => Hash::make(static::$password ?? $this->faker->password()),
             'remember_token' => Str::random(10),
         ];
     }

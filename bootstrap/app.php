@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Middleware\AuthenticateTestUser;
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
 use Illuminate\Foundation\Application;
@@ -17,11 +16,6 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);
-
-        //  Добавляем глобально кастомный middleware
-        $middleware->append([
-            AuthenticateTestUser::class,
-        ]);
 
         $middleware->web(append: [
             HandleAppearance::class,

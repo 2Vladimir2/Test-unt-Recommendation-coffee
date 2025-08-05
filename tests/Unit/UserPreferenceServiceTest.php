@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Enums\CoffeeType;
+use App\Enums\CoffeeTypeEnum;
 use App\Enums\MoodEnum;
 use App\Models\User;
 use App\Services\UserPreferenceService;
@@ -32,7 +32,7 @@ class UserPreferenceServiceTest extends TestCase
     {
         $service = new UserPreferenceService;
 
-        $this->assertEquals(CoffeeType::LATTE, $service->getRecommendation($this->user));
+        $this->assertEquals(CoffeeTypeEnum::LATTE, $service->getRecommendation($this->user));
     }
 
     public function test_it_returns_null_if_no_preference()

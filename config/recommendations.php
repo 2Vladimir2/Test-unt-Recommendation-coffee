@@ -1,25 +1,25 @@
 <?php
 
-use App\Enums\CoffeeType;
+use App\Enums\CoffeeTypeEnum;
 use App\Enums\MoodEnum;
-use App\Enums\TimeOfDay;
+use App\Enums\TimeOfDayEnum;
 
 return [
 
     'moods' => [
-        MoodEnum::CHEERFUL->value => CoffeeType::CAPPUCCINO->value,
-        MoodEnum::TIRED->value => CoffeeType::ESPRESSO->value,
-        MoodEnum::SLEEPY->value => CoffeeType::DOPPIO->value,
-        MoodEnum::STRESS->value => CoffeeType::LATTE->value,
-        MoodEnum::CHEERY->value => CoffeeType::AMERICANO->value,
+        MoodEnum::CHEERFUL->value => CoffeeTypeEnum::CAPPUCCINO->value,
+        MoodEnum::TIRED->value => CoffeeTypeEnum::ESPRESSO->value,
+        MoodEnum::SLEEPY->value => CoffeeTypeEnum::DOPPIO->value,
+        MoodEnum::STRESS->value => CoffeeTypeEnum::LATTE->value,
+        MoodEnum::CHEERY->value => CoffeeTypeEnum::AMERICANO->value,
     ],
 
     'time_of_day' => [
-        TimeOfDay::MORNING->value => CoffeeType::ESPRESSO->value,
-        TimeOfDay::AFTERNOON->value => CoffeeType::LATTE->value,
-        TimeOfDay::EVENING->value => CoffeeType::DECAFFEINATED->value,
+        TimeOfDayEnum::MORNING->value => CoffeeTypeEnum::ESPRESSO->value,
+        TimeOfDayEnum::AFTERNOON->value => CoffeeTypeEnum::LATTE->value,
+        TimeOfDayEnum::EVENING->value => CoffeeTypeEnum::DECAFFEINATED->value,
     ],
 
-    'default' => CoffeeType::AMERICANO,
+    'default' => CoffeeTypeEnum::AMERICANO,
 
 ];

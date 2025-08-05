@@ -9,11 +9,6 @@ class TestUserSeeder extends Seeder
 {
     public function run(): void
     {
-        User::factory()->create([
-            'id' => 1,
-            'name' => 'Тестовый пользователь',
-            'email' => 'test@example.com',
-            'password' => bcrypt('password'), // или Hash::make('password')
-        ]);
+        User::factory(10)->create();
     }
 }

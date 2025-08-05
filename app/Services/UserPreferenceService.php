@@ -2,20 +2,13 @@
 
 namespace App\Services;
 
-use App\Enums\CoffeeType;
+use App\Models\User;
+use Illuminate\Support\Collection;
 
 class UserPreferenceService
 {
-    public function getRecommendation(object $user): ?CoffeeType
+    public function getRecommendation(User $user): Collection
     {
-        if ($user->preferred_coffee instanceof CoffeeType) {
-            return $user->preferred_coffee;
-        }
-
-        try {
-            return CoffeeType::from($user->preferred_coffee);
-        } catch (\ValueError $e) {
-            return null;
-        }
+        return $user->preferred_coffies;
     }
 }
