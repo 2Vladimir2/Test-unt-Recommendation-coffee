@@ -2,13 +2,12 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
+use App\Models\RecommendationHistory;
 use App\Services\MoodService;
+use App\Services\RecommendationService;
 use App\Services\TimeOfDayService;
 use App\Services\UserPreferenceService;
-use App\Services\RecommendationService;
-use App\Models\RecommendationHistory;
-
+use Illuminate\Console\Command;
 
 class RecommendCoffee extends Command
 {
@@ -34,9 +33,12 @@ class RecommendCoffee extends Command
         $name = $this->argument('name');
         $mood = $this->argument('mood') ?? 'неизвестно';
 
-        $user = new class($name, $mood) {
+        $user = new class($name, $mood)
+        {
             public string $name;
+
             public ?string $mood;
+
             public ?string $preferred_coffee = null;
 
             public function __construct($name, $mood)
@@ -47,9 +49,9 @@ class RecommendCoffee extends Command
         };
 
         $recommendationService = new RecommendationService(
-            new MoodService(),
-            new TimeOfDayService(),
-            new UserPreferenceService()
+            new MoodService,
+            new TimeOfDayService,
+            new UserPreferenceService
         );
 
         $coffee = $recommendationService->recommend($user);

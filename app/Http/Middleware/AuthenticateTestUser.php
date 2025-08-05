@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,12 +15,13 @@ class AuthenticateTestUser
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!app()->runningUnitTests()) {
+        if (! app()->runningUnitTests()) {
             $user = \App\Models\User::first(); // или find(1), как ты хочешь
             if ($user) {
                 auth()->setUser($user);
             }
         }
+
         return $next($request);
     }
 }

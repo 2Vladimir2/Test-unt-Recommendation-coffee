@@ -2,18 +2,21 @@
 
 namespace App\Services;
 
+use App\Enums\CoffeeType;
+use App\Enums\TimeOfDay;
+
 class TimeOfDayService
 {
-    protected array $map = [
-        'morning' => 'Эспрессо',
-        'afternoon' => 'Латте',
-        'evening' => 'Безкофеиновый',
-        ];
-
-    public function getRecommendation(string $timeOfDay) : string
+    public function getRecommendation(?TimeOfDay $timeOfDay): CoffeeType
     {
-        $timeOfDay = strtolower($timeOfDay);
+        if ($timeOfDay === null) {
+            return config('recommendations.default');
+        }
 
-        return $this->map[$timeOfDay] ?? 'Американо';
+        $timeMap = config('recommendations.time_of_day', []);
+
+        $recommendation = $timeMap[$timeOfDay->value] ?? config('recommendations.default');
+
+        return CoffeeType::from($recommendation);
     }
 }

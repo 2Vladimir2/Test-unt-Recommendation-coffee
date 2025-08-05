@@ -2,8 +2,11 @@
 
 namespace App\Services;
 
-use App\Enums\Mood;
 use App\Enums\CoffeeType;
+use App\Enums\MoodEnum;
+use App\Enums\TimeOfDay;
+use App\Models\User;
+
 class RecommendationService
 {
     public function __construct(
@@ -11,32 +14,24 @@ class RecommendationService
         protected TimeOfDayService $timeOfDayService,
         protected UserPreferenceService $userPreferenceService,
     ) {}
-    public function recommend(object $user): CoffeeType
+
+    public function recommend(User $user, array $data): CoffeeType
     {
-        // 1. Предпочтение пользователя
-        $preferred = $this->userPreferenceService->getRecommendation($user);
-        if ($preferred) {
-            return CoffeeType::from($preferred);
+        $mood = MoodEnum::tryFrom(mb_strtolower($data['mood'] ?? ''));
+
+        if ($preferred = $this->userPreferenceService->getRecommendation($user)) {
+            return $preferred;
         }
 
-        // 2. Настроение
-        if (isset($user->mood)) {
-            // Преобразуем строку в enum Mood
-            $moodEnum = Mood::tryFrom($user->mood);
-            if ($moodEnum !== null) {
-                // Получаем рекомендацию (ожидается enum CoffeeType)
-                $moodCoffee = $this->moodService->getRecommendation($moodEnum);
-                if ($moodCoffee !== null) {
-                    return $moodCoffee; // Это уже enum CoffeeType
-                }
-            }
+        if ($mood) {
+            return $this->moodService->getRecommendation($user->mood);
         }
 
-        // 3. Дефолт
-        return CoffeeType::Американо;
+        if ($user->time_of_day instanceof TimeOfDay) {
+            return $this->timeOfDayService->getRecommendation($user->time_of_day);
+        }
+
+        return CoffeeType::from(config('recommendations.default'));
+
     }
-
-
-
-
 }

@@ -2,29 +2,30 @@
 
 namespace Tests\Unit;
 
+use App\Enums\CoffeeType;
+use App\Enums\MoodEnum;
 use App\Models\User;
 use App\Services\MoodService;
 use App\Services\RecommendationService;
 use App\Services\TimeOfDayService;
 use App\Services\UserPreferenceService;
-use Tests\TestCase;
-use App\Enums\Mood;
-use App\Enums\CoffeeType;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class RecommendationServiceTest extends TestCase
 {
     use RefreshDatabase;
+
     protected function setUp(): void
     {
         parent::setUp();
 
         config()->set('recommendations.moods', [
-            'уставший' => 'Эспрессо',
-            'бодрый' => 'Эспрессо',
+            'tired' => 'espresso',
+            'cheery' => 'espresso',
         ]);
 
-        config()->set('recommendations.default', 'Американо');
+        config()->set('recommendations.default', 'americano');
     }
 
     public function test_it_returns_user_preference_if_exists()
@@ -33,19 +34,19 @@ class RecommendationServiceTest extends TestCase
             'name' => 'Test User',
             'email' => 'user1@example.com',
             'password' => bcrypt('password'),
-            'preferred_coffee' => 'Эспрессо',
-            'mood' => Mood::уставший->value,
+            'preferred_coffee' => CoffeeType::ESPRESSO->value,
+            'mood' => MoodEnum::TIRED->value,
         ]);
 
         $service = new RecommendationService(
-            new MoodService(),
-            new TimeOfDayService(),
-            new UserPreferenceService()
+            new MoodService,
+            new TimeOfDayService,
+            new UserPreferenceService
         );
 
         // Сравниваем с enum по значению
         $this->assertEquals(
-            CoffeeType::from($user->preferred_coffee)->value,
+            $user->preferred_coffee->value,
             $service->recommend($user)->value
         );
     }
@@ -56,18 +57,19 @@ class RecommendationServiceTest extends TestCase
             'name' => 'Test User 2',
             'email' => 'user2@example.com',
             'password' => bcrypt('password'),
-            'mood' => Mood::бодрый->value,
+            'mood' => MoodEnum::CHEERY->value,
             // preferred_coffee не установлен
         ]);
 
         $service = new RecommendationService(
-            new MoodService(),
-            new TimeOfDayService(),
-            new UserPreferenceService()
+            new MoodService,
+            new TimeOfDayService,
+            new UserPreferenceService
         );
 
-        $this->assertEquals(CoffeeType::Эспрессо->value, $service->recommend($user)->value);
+        $this->assertEquals(CoffeeType::ESPRESSO->value, $service->recommend($user)->value);
     }
+
     public function test_it_returns_default_if_no_data()
     {
         $user = User::create([
@@ -78,11 +80,11 @@ class RecommendationServiceTest extends TestCase
         ]);
 
         $service = new RecommendationService(
-            new MoodService(),
-            new TimeOfDayService(),
-            new UserPreferenceService()
+            new MoodService,
+            new TimeOfDayService,
+            new UserPreferenceService
         );
 
-        $this->assertEquals(CoffeeType::Американо->value, $service->recommend($user)->value);
+        $this->assertEquals(CoffeeType::AMERICANO->value, $service->recommend($user)->value);
     }
 }

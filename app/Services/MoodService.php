@@ -2,11 +2,12 @@
 
 namespace App\Services;
 
-use App\Enums\Mood;
 use App\Enums\CoffeeType;
+use App\Enums\MoodEnum;
+
 class MoodService
 {
-    public function getRecommendation(?Mood $mood): CoffeeType
+    public function getRecommendation(?MoodEnum $mood): CoffeeType
     {
         if ($mood === null) {
             return CoffeeType::from(config('recommendations.default'));
@@ -14,12 +15,9 @@ class MoodService
 
         // Получаем карту из конфига
         $moodsMap = config('recommendations.moods', []);
-
         // Ищем соответствие, если нет — возвращаем дефолт
         $recommendation = $moodsMap[$mood->value] ?? config('recommendations.default');
 
         return CoffeeType::from($recommendation);
     }
 }
-
-

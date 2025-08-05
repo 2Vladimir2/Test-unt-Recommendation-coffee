@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\MoodEnum;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\User;
+use App\Services\LanguageService;
 use App\Services\MoodService;
+use App\Services\RecommendationService;
 use App\Services\TimeOfDayService;
 use App\Services\UserPreferenceService;
-use App\Services\RecommendationService;
-use App\Models\User;
-use App\Enums\Mood;
+use Illuminate\Http\Request;
 
-class  RecommendationController extends Controller
+class RecommendationController extends Controller
 {
-    public function recommend(Request $request)
+    public function recommend(Request $request, RecommendationService $recommendationService)
     {
         $data = $request->validate([
             'user_id' => 'nullable|integer',
@@ -21,27 +22,12 @@ class  RecommendationController extends Controller
             'time_of_day' => 'nullable|string',
         ]);
 
-        $mood = $data['mood'] ? Mood::tryFrom(mb_strtolower($data['mood'])) : null;
+        $user = $request->user();
 
-        $user = null;
-        if (!empty($data['user_id'])) {
-            $user = User::find($data['user_id']);
-        }
-
-        if (!$user) {
-            $user = new User();
-            $user->mood = $data['mood'] ?? null;
-            $user->time_of_day = $data['time_of_day'] ?? null;
-        }
-
-        $recommendation = (new RecommendationService(
-            new MoodService(),
-            new TimeOfDayService(),
-            new UserPreferenceService()
-        ))->recommend($user);
+        $recommendation = $recommendationService->recommend($user, $data);
 
         return response()->json([
-            'recommendation' => $recommendation
+            'recommendation' => $recommendation,
         ]);
     }
 }

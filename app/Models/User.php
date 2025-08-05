@@ -3,6 +3,10 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\CoffeeType;
+use App\Enums\MoodEnum;
+use App\Enums\TimeOfDay;
+use App\Services\LanguageService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -23,6 +27,7 @@ class User extends Authenticatable
         'password',
         'preferred_coffee',
         'mood',
+        'time_of_day',
     ];
 
     /**
@@ -43,6 +48,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'preferred_coffee' => CoffeeType::class,
+        'mood' => MoodEnum::class,
+        'time_of_day' => TimeOfDay::class,
+        'language' => LanguageService::class,
     ];
-
 }

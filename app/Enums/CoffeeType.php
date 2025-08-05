@@ -4,11 +4,11 @@ namespace App\Enums;
 
 enum CoffeeType: string
 {
-    case Капучино = 'Капучино';
-    case  Эспрессо = 'Эспрессо';
-    case Доппио = 'Доппио';
-    case Латте = 'Латте';
-    case Американо = 'Американо';
-    case Безкофеиновый = 'Безкофеиновый';
+    case CAPPUCCINO = 'cappuccino';
+    case ESPRESSO = 'espresso';
+    case DOPPIO = 'doppio';
+    case LATTE = 'latte';
+    case AMERICANO = 'americano';
+    case DECAFFEINATED = 'decaffeinated';
 
 }

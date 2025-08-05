@@ -1,45 +1,25 @@
 <?php
 
-
+use App\Enums\CoffeeType;
+use App\Enums\MoodEnum;
+use App\Enums\TimeOfDay;
 
 return [
 
-    /*
-    |--------------------------------------------------------------------------
-    | Рекомендации кофе по настроению
-    |--------------------------------------------------------------------------
-    |
-    | Здесь прописаны соответствия настроения и рекомендуемого типа кофе.
-    | Можно легко менять и расширять без правки кода.
-    |
-    */
-
     'moods' => [
-        'веселый'   => 'Капучино',
-        'уставший'  => 'Эспрессо',
-        'сонный'    => 'Доппио',
-        'стресс'    => 'Латте',
-        'бодрый'    => 'Американо',
+        MoodEnum::CHEERFUL->value => CoffeeType::CAPPUCCINO->value,
+        MoodEnum::TIRED->value => CoffeeType::ESPRESSO->value,
+        MoodEnum::SLEEPY->value => CoffeeType::DOPPIO->value,
+        MoodEnum::STRESS->value => CoffeeType::LATTE->value,
+        MoodEnum::CHEERY->value => CoffeeType::AMERICANO->value,
     ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Рекомендации кофе по времени суток
-    |--------------------------------------------------------------------------
-    */
 
     'time_of_day' => [
-        'morning'   => 'Эспрессо',
-        'afternoon' => 'Латте',
-        'evening'   => 'Безкофеиновый',
+        TimeOfDay::MORNING->value => CoffeeType::ESPRESSO->value,
+        TimeOfDay::AFTERNOON->value => CoffeeType::LATTE->value,
+        TimeOfDay::EVENING->value => CoffeeType::DECAFFEINATED->value,
     ],
 
-    /*
-    |--------------------------------------------------------------------------
-    | Рекомендация по умолчанию
-    |--------------------------------------------------------------------------
-    */
-
-    'default' => 'Американо',
+    'default' => CoffeeType::AMERICANO,
 
 ];

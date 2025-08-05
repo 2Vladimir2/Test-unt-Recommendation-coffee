@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('preferred_coffee')->nullable();
             $table->string('mood')->nullable();
+            $table->string('time_of_day')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
